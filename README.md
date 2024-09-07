@@ -1,2 +1,2 @@
-# Python
- são meus progetos / exercícios das aulas de python do gustavo guanabara
+# Aprendendo Python
+ são meus progjetos / exercícios das aulas de python do gustavo guanabara
