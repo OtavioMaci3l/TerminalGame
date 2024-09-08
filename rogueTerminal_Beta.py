@@ -45,7 +45,7 @@ def criarMob(num, lvl):
         "level":level,
         "dano": 5*level,
         "hp": 100*level,
-        "hpMax": 100*level,
+        "hpMax": 100*level, 
         "exp":5*level     #quanto xp vai dropa
     }
     return novoMob
@@ -93,8 +93,15 @@ def batalha():
 
     while player['hp']>0 and mobvivo==True:
         hud()
-        mob=int(input("Escolha qual mob atacar : "))-1
-        selecionarMob = listaNPCs[mob]
+        while True:
+            try:
+                mob=int(input("Escolha qual mob atacar : "))-1
+                selecionarMob = listaNPCs[mob]
+            except:
+                continue
+            else:
+                break
+
         atacarMob(selecionarMob)
         os.system('cls')
         mostrarMobs()
