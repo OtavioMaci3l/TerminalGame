@@ -11,8 +11,30 @@ player={
     "hpMax":100,
     "dano":100
 }
+menuIniciar=[
+    "1. Iniciar batalha",
+    "2. Editar personagem",
+    "3. Sair"
+]
+menuPause=[
+    "1. Voltar a batalha",
+    "2. Reiniciar batalha",
+    "3. Voltar ao menu incial",
+    "4. Sair do jogo"
+]
 
-
+#mostrar menu inciar
+def menuInicio():
+    print("----------------------------")
+    for opc in menuIniciar:
+        print(opc)
+    print("----------------------------")
+#mostrar menu pause
+def pause():
+    print("----------------------------")
+    for opc in menuPause:
+        print(opc)
+    print("----------------------------")
 
 #cria um mob de um level aleatório da metade ao maximo do level do player
 #apenas cria e retorna o mob
@@ -64,12 +86,12 @@ def hud():
 
 #batalha
 def batalha():
-    mobvivo=0
+    mobvivo=False
     for i in listaNPCs:
         if i['hp']>0:
-            mobvivo+=1
+            mobvivo=True
 
-    while player['hp']>0 and mobvivo>0:
+    while player['hp']>0 and mobvivo==True:
         hud()
         mob=int(input("Escolha qual mob atacar : "))-1
         selecionarMob = listaNPCs[mob]
@@ -77,11 +99,10 @@ def batalha():
         os.system('cls')
         mostrarMobs()
         mobvivo=0
+        mobvivo=False
         for i in listaNPCs:
             if i['hp']>0:
-                mobvivo+=1
-            else:
-                mobvivo-=1
+                mobvivo=True
         
 
 #tela de vitória e scoore da wave
@@ -102,18 +123,36 @@ def lose():
 #por enquanto será decidido manualmnet o level do player
 #o código começa aqui
 def inicio():
+    os.system('cls')
     while True:
-        os.system('cls')
-        lvl=player["level"]
-        quant=int(lvl/10)
-        gerarMobs(quant, lvl)
-        mostrarMobs()
-        batalha()
-        os.system('cls')
-        if player["hp"]>0:
-            win()
+        print("       TERMINAL-GAME     ")
+        menuInicio()
+        opc=input("             ")
+        if opc == "1":
+            while True:
+                os.system('cls')
+                lvl=player["level"]
+                quant=int(lvl/10)
+                gerarMobs(quant, lvl)
+                mostrarMobs()
+                batalha()
+                os.system('cls')
+                if player["hp"]>0:
+                    win()
+                    break
+                else:
+                    lose()
+                    break
+        elif opc == "2":
+            print("a")
+        elif opc == "3":
+            print("Saindo...")
+            break
         else:
-            lose()
+            os.system('cls')
+            print(f"'{opc}' é um código invalido\n")
+            continue
 
 
+#começa o código
 inicio()
