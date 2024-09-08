@@ -13,6 +13,7 @@ player={
 }
 
 
+
 #cria um mob de um level aleatório da metade ao maximo do level do player
 #apenas cria e retorna o mob
 def criarMob(num, lvl):
@@ -45,7 +46,6 @@ def mostrarMobs():
     print("\n------------------------------------------------------------")
     for npc in listaNPCs:
         print(f"| Nome: {npc['nome']} || Level: {npc['level']} || Dano: {npc['dano']} || HP: {npc['hp']} / {npc['hpMax']} |\n------------------------------------------------------------")
-    print("\n")
 
 
 #atacar o mob
@@ -58,23 +58,62 @@ def atacarPlayer(mob):
 
 #a inteface do player
 def hud():
-    print(f"Player HP: {player['hp']} / {player['hpMax']}")
-
-#por enquanto será decidido manualmnet o level do player
-#o código começa aqui
-def inicio():
-    lvl=30
-    quant=int(lvl/10)
-    gerarMobs(quant, lvl)
-    mostrarMobs()
+    print("------------------------------------------------------------")
+    print(f" /-----\ \n | <*> | \n | /|\ |  Player HP: {player['hp']} / {player['hpMax']}  \n | / \ | \n \-----/")
     print("------------------------------------------------------------\n")
-    while player['hp']>0:
+
+#batalha
+def batalha():
+    mobvivo=0
+    for i in listaNPCs:
+        if i['hp']>0:
+            mobvivo+=1
+
+    while player['hp']>0 and mobvivo>0:
         hud()
         mob=int(input("Escolha qual mob atacar : "))-1
         selecionarMob = listaNPCs[mob]
         atacarMob(selecionarMob)
         os.system('cls')
         mostrarMobs()
-        print("------------------------------------------------------------\n")
+        mobvivo=0
+        for i in listaNPCs:
+            if i['hp']>0:
+                mobvivo+=1
+            else:
+                mobvivo-=1
+        
+
+#tela de vitória e scoore da wave
+def win():
+    hud()
+    print("------------------------------------------------------------")
+    print("Parabens você derrotou a wave")
+    print("------------------------------------------------------------\n")
+
+#tela de derrota e scoore da wave
+def lose():
+    hud()
+    print("-------------------------------------------------------------------------")
+    print("Você pode ter perdido a batalha mas não guerra vá e conquiste sua vitória")
+    print("-------------------------------------------------------------------------\n")
+
+
+#por enquanto será decidido manualmnet o level do player
+#o código começa aqui
+def inicio():
+    while True:
+        os.system('cls')
+        lvl=player["level"]
+        quant=int(lvl/10)
+        gerarMobs(quant, lvl)
+        mostrarMobs()
+        batalha()
+        os.system('cls')
+        if player["hp"]>0:
+            win()
+        else:
+            lose()
+
 
 inicio()
