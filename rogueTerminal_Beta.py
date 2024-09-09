@@ -98,6 +98,9 @@ def batalha():
                 mob=int(input("Escolha qual mob atacar : "))-1
                 selecionarMob = listaNPCs[mob]
             except:
+                os.system('cls')
+                mostrarMobs()
+                hud()
                 continue
             else:
                 break
@@ -132,6 +135,7 @@ def lose():
 def inicio():
     os.system('cls')
     while True:
+        print("----------------------------")
         print("       TERMINAL-GAME     ")
         menuInicio()
         opc=input("             ")
@@ -151,13 +155,14 @@ def inicio():
                     lose()
                     break
         elif opc == "2":
-            print("a")
+            os.system('cls')
+            print("(isso ainda não foi desenvovido, em breve estara pronto)")
         elif opc == "3":
             print("Saindo...")
             break
         else:
             os.system('cls')
-            print(f"'{opc}' é um código invalido\n")
+            print(f"'{opc}' é um código invalido")
             continue
 
 
