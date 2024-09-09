@@ -1,7 +1,9 @@
 from random import randint
 import os
-
+#lista de Mobs, tá npc pq é muita coisa pra muda, depois eu mudo isso para listaMOBs
 listaNPCs=[]
+
+#player
 player={
     "nome": "Lotus",
     "level":10,
@@ -11,11 +13,15 @@ player={
     "hpMax":100,
     "dano":100
 }
+
+#menu principal
 menuIniciar=[
     "1. Iniciar batalha",
     "2. Editar personagem",
     "3. Sair"
 ]
+
+#mene de pause
 menuPause=[
     "1. Voltar a batalha",
     "2. Reiniciar batalha",
@@ -154,6 +160,7 @@ def inicio():
                 else:
                     lose()
                     break
+            listaNPCs.clear()
         elif opc == "2":
             os.system('cls')
             print("(isso ainda não foi desenvovido, em breve estara pronto)")
