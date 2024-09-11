@@ -13,8 +13,8 @@ verd='\033[1;32;40m'
 #amarelho
 amar='\033[1;33;40m'
 
-#lista de Mobs, tá npc pq é muita coisa pra muda, depois eu mudo isso para listaMOBs
-listaNPCs=[]
+#lista de Mobs, tá mob pq é muita coisa pra muda, depois eu mudo isso para listaMobs
+listaMobs=[]
 
 #player
 player={
@@ -22,8 +22,8 @@ player={
     "level":20,
     "exp":0,
     "expMax":100,
-    "hp":100,
-    "hpMax":100,
+    "hp":9000,
+    "hpMax":9000,
     "dano":100
 }
 
@@ -33,14 +33,18 @@ menuIniciar=[
     "2. Editar personagem",
     f"{verm}3. Sair{res}"
 ]
-
-#mene de pause
+#menu de pause
 menuPause=[
     "1. Voltar a batalha",
     "2. Reiniciar batalha",
     "3. Voltar ao menu incial",
     "4. Sair do jogo"
 ]
+
+#lista de eventos
+listaEventos=[]
+#lista dos ultimos 2 eventos, ou seja, os ultimos movimentos
+ultimosMov=[]
 
 #mostrar menu inciar
 def menuInicio():
@@ -70,7 +74,7 @@ def criarMob(num, lvl):
     return novoMob
 
 
-#gera uma quantidade de mobs e adiciona os na lista de NPCs
+#gera uma quantidade de mobs e adiciona os na lista de mobs
 #a quantidade de mobs depende do level do player
 #por enquanto sera decidido manualmente
 def gerarMobs(quant, lvl):
@@ -78,7 +82,7 @@ def gerarMobs(quant, lvl):
     for i in range(quant):
         num+=1
         novoMob = criarMob(num, lvl)
-        listaNPCs.append(novoMob)
+        listaMobs.append(novoMob)
 
 
 #esta função servira como um TAB para o usuário
@@ -86,22 +90,11 @@ def gerarMobs(quant, lvl):
 def mostrarMobs():
     corVida=verd
     print("\n------------------------------------------------------------")
-    for npc in listaNPCs:
-
-        #remove o mob derrotado
-        if npc['hp']<=0:
-            listaNPCs.remove(npc)
-            os.system('cls')
-            mostrarMobs()
-            npc['hp']="DERROTADO"
-
-        #talvez resolva o bug
-        if npc['hp']=="DERROTADO":
-            npc['hp']=0
+    for mob in listaMobs:
 
         #quando a vida do mob chega na metade ela fica amarela e quando chega na metade da metade fica
-        if npc['hp']<=npc['hpMax']/2:
-            if npc['hp']<=(npc['hpMax']/2)/2:
+        if mob['hp']<=mob['hpMax']/2:
+            if mob['hp']<=(mob['hpMax']/2)/2:
                 corVida=verm
             else:
                 corVida=amar
@@ -109,12 +102,16 @@ def mostrarMobs():
             corVida=verd
 
         #vo aproveitar um bug que ta dando para dar mais uma caracteristica ao meu jogo
-        if npc['hp']==1 or npc['hp']==0:
-            npc['hp']="DERROTADO"
-            npc['hpMax']=""
+        #remove o mob derrotado
+        if mob['hp']<=0:
+            listaMobs.remove(mob)
+            os.system('cls')
+            mostrarMobs()
+            mob['hp']="DERROTADO"
+            mob['hpMax']=""
 
         #mostra os mobs
-        print(f"| Nome: {verm}{npc['nome']}{res} || Level: {npc['level']} || Dano: {npc['dano']} || HP: {corVida}{npc['hp']}{res} / {verd}{npc['hpMax']}{res} |\n------------------------------------------------------------")
+        print(f"| Nome: {verm}{mob['nome']}{res} || Level: {mob['level']} || Dano: {mob['dano']} || HP: {corVida}{mob['hp']}{res} / {verd}{mob['hpMax']}{res} |\n------------------------------------------------------------")
 
 
 #atacar o mob
@@ -139,10 +136,17 @@ def hud():
     print(f" /-----\ \n | <*> | \n | /|\ |  Player HP: {corVida}{player['hp']}{res} / {player['hpMax']}  \n | / \ | \n \-----/")
     print("------------------------------------------------------------\n")
 
+
+#acabei de lembra isso só vai da certo depois de fazer os mobs atacar
+#hud de eventos, mostra as ações realizadas nos ultimos 2 turnos e, armazena todas as ações em uma ultra lista 
+def eventos():
+    print("a")
+
+
 #batalha
 def batalha():
     mobvivo=False
-    for i in listaNPCs:
+    for i in listaMobs:
         if i['hp']>0:
             mobvivo=True
 
@@ -151,7 +155,7 @@ def batalha():
         while True:
             try:
                 mob=int(input("Escolha qual mob atacar : "))-1
-                selecionarMob = listaNPCs[mob]
+                selecionarMob = listaMobs[mob]
             except:
                 os.system('cls')
                 mostrarMobs()
@@ -163,9 +167,10 @@ def batalha():
         atacarMob(selecionarMob)
         os.system('cls')
         mostrarMobs()
+        atacarPlayer(selecionarMob)
         mobvivo=0
         mobvivo=False
-        for i in listaNPCs:
+        for i in listaMobs:
             if i['hp']>0:
                 mobvivo=True
         
@@ -209,7 +214,7 @@ def inicio():
                 else:
                     lose()
                     break
-            listaNPCs.clear()
+            listaMobs.clear()
         elif opc == "2":
             os.system('cls')
             print("(isso ainda não foi desenvovido, em breve estara pronto)")
