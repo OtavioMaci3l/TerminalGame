@@ -19,12 +19,12 @@ listaMobs=[]
 #player
 player={
     "nome": "Lotus",
-    "level":20,
+    "level":30,
     "exp":0,
     "expMax":100,
-    "hp":9000,
-    "hpMax":9000,
-    "dano":100
+    "hp":10000,
+    "hpMax":100,
+    "dano":500
 }
 
 #menu principal
@@ -66,7 +66,7 @@ def criarMob(num, lvl):
     novoMob={
         "nome":f"Mob #{num}", 
         "level":level,
-        "dano": 5*level,
+        "dano": 2*level,
         "hp": 100*level,
         "hpMax": 100*level, 
         "exp":5*level     #quanto xp vai dropa
@@ -111,7 +111,8 @@ def mostrarMobs():
             mob['hpMax']=""
 
         #mostra os mobs
-        print(f"| Nome: {verm}{mob['nome']}{res} || Level: {mob['level']} || Dano: {mob['dano']} || HP: {corVida}{mob['hp']}{res} / {verd}{mob['hpMax']}{res} |\n------------------------------------------------------------")
+        if mob['level']<=player['level']:
+            print(f" /-----------\ \n |    |{verm}={res}|    | \n |=|=|{verm} * {res}|=|=| | Nome: {verm}{mob['nome']}{res} || Level: {mob['level']} || Dano: {mob['dano']} || HP: {corVida}{mob['hp']}{res} / {verd}{mob['hpMax']}{res} | \n |    |_|    | \n |  / / \ \  | \n \-----------/ \n------------------------------------------------------------")
 
 
 #atacar o mob
@@ -133,7 +134,7 @@ def hud():
     else:
         corVida=verd
     print("------------------------------------------------------------")
-    print(f" /-----\ \n | <*> | \n | /|\ |  Player HP: {corVida}{player['hp']}{res} / {player['hpMax']}  \n | / \ | \n \-----/")
+    print(f" /-----\ \n | <{amar}*{res}> | \n | /|\ |  Player HP: {corVida}{player['hp']}{res} / {player['hpMax']}  \n | / \ | \n \-----/")
     print("------------------------------------------------------------\n")
 
 
@@ -145,6 +146,7 @@ def eventos():
 
 #batalha
 def batalha():
+    #verificar se tem mob vivo no jogo
     mobvivo=False
     for i in listaMobs:
         if i['hp']>0:
@@ -168,7 +170,8 @@ def batalha():
         os.system('cls')
         mostrarMobs()
         atacarPlayer(selecionarMob)
-        mobvivo=0
+
+        #verificar se ainda tem mobs vivos o jogo
         mobvivo=False
         for i in listaMobs:
             if i['hp']>0:
@@ -210,9 +213,13 @@ def inicio():
                 os.system('cls')
                 if player["hp"]>0:
                     win()
+                    #temporario, em breve faço uma função para arrumar os status do player
+                    player["hp"]=100
                     break
                 else:
                     lose()
+                    #temporario, em breve faço uma função para arrumar os status do player
+                    player["hp"]=100
                     break
             listaMobs.clear()
         elif opc == "2":
